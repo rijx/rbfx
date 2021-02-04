@@ -11,7 +11,7 @@ env:
   URHO3D_ENABLE_ALL: ON
   URHO3D_SAMPLES: ON
   # ccache configuration
-  ccache_prefix: ${{ secrets.CACHE_VERSION }}-master
+  ccache_prefix: ${{ secrets.CACHE_VERSION }}-renderer
   CCACHE_DIR: ${{ github.workspace }}/.ccache
   CCACHE_COMPRESS: true
   CCACHE_COMPRESSLEVEL: 9
