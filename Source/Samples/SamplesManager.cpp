@@ -309,6 +309,10 @@ void SamplesManager::Start()
     RegisterSample<HelloRmlUI>();
 #endif
 
+    //startSample_ = "HugeObjectCount";
+    startSample_ = "SceneAndUILoad";
+    //startSample_ = "StaticScene";
+    //startSample_ = "RenderToTexture";
     if (!startSample_.empty())
         StartSample(startSample_);
 }

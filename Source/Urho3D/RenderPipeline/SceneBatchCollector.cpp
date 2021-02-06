@@ -78,10 +78,11 @@ struct DrawableZRangeEvaluator
 
 }
 
-SceneBatchCollector::SceneBatchCollector(Context* context)
+SceneBatchCollector::SceneBatchCollector(Context* context, DrawableProcessor* dp)
     : Object(context)
     , workQueue_(context->GetSubsystem<WorkQueue>())
     , renderer_(context->GetSubsystem<Renderer>())
+    , dp_(dp)
 {}
 
 SceneBatchCollector::~SceneBatchCollector()
@@ -155,6 +156,8 @@ void SceneBatchCollector::BeginFrame(const FrameInfo& frameInfo, SceneBatchColle
 
 void SceneBatchCollector::ProcessVisibleDrawables(const ea::vector<Drawable*>& drawables)
 {
+    dp_->ProcessDrawables(drawables);
+
     ForEachParallel(workQueue_, drawableWorkThreshold_, drawables,
         [this](unsigned /*index*/, Drawable* drawable)
     {

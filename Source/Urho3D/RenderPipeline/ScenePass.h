@@ -23,7 +23,7 @@
 #pragma once
 
 #include "../Core/Object.h"
-#include "../RenderPipeline/DrawableLightAccumulator.h"
+#include "../RenderPipeline/LightAccumulator.h"
 #include "../RenderPipeline/SceneBatch.h"
 #include "../RenderPipeline/SceneLight.h"
 #include "../RenderPipeline/ScenePipelineStateCache.h"

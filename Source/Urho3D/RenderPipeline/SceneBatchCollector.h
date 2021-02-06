@@ -29,7 +29,8 @@
 #include "../Graphics/Technique.h"
 #include "../Math/NumericRange.h"
 #include "../Math/SphericalHarmonics.h"
-#include "../RenderPipeline/DrawableLightAccumulator.h"
+#include "../RenderPipeline/LightAccumulator.h"
+#include "../RenderPipeline/DrawableProcessor.h"
 #include "../RenderPipeline/SceneBatch.h"
 #include "../RenderPipeline/SceneBatchCollectorCallback.h"
 #include "../RenderPipeline/SceneDrawableData.h"
@@ -60,7 +61,7 @@ public:
     using VertexLightCollection = ea::array<unsigned, MaxVertexLights>;
 
     /// Construct.
-    SceneBatchCollector(Context* context);
+    SceneBatchCollector(Context* context, DrawableProcessor* dp);
     /// Destruct.
     ~SceneBatchCollector();
 
@@ -131,6 +132,7 @@ private:
     WorkQueue* workQueue_{};
     /// Renderer.
     Renderer* renderer_{};
+    DrawableProcessor* dp_{};
     /// Pipeline state factory.
     SceneBatchCollectorCallback* callback_{};
     /// Number of worker threads.

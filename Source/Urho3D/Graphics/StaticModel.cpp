@@ -453,6 +453,7 @@ void StaticModel::CalculateLodLevels()
 
 void StaticModel::UpdateBatchesLightmaps()
 {
+    MarkPipelineStateHashDirty();
     if (GetBakeLightmapEffective())
     {
         for (unsigned i = 0; i < batches_.size(); ++i)
@@ -477,6 +478,13 @@ void StaticModel::HandleModelReloadFinished(StringHash eventType, VariantMap& ev
     Model* currentModel = model_;
     model_.Reset(); // Set null to allow to be re-set
     SetModel(currentModel);
+}
+
+unsigned StaticModel::RecalculatePipelineStateHash() const
+{
+    unsigned hash = Drawable::RecalculatePipelineStateHash();
+    CombineHash(hash, GetBakeLightmapEffective());
+    return hash;
 }
 
 }

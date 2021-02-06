@@ -29,6 +29,8 @@
 #include "../Graphics/Technique.h"
 #include "../RenderPipeline/ScenePass.h"
 
+#include <EASTL/sort.h>
+
 #include "../DebugNew.h"
 
 namespace Urho3D

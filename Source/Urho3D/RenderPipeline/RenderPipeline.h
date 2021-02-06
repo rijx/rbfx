@@ -43,6 +43,7 @@ class Viewport;
 class RenderPipelineViewport;
 class ShadowMapAllocator;
 class DrawCommandQueue;
+class DrawableProcessor;
 class SceneBatchCollector;
 class SceneBatchRenderer;
 
@@ -108,6 +109,10 @@ public:
     SharedPtr<RenderPipelineTexture> CreatePersistentFixedScreenBuffer(
         const ScreenBufferParams& params, const IntVector2& fixedSize);
 
+    /// Signal when update begins.
+    Signal<void(const FrameInfo& frameInfo)> OnUpdateBegin;
+    /// Signal when update end.
+    Signal<void(const FrameInfo& frameInfo)> OnUpdateEnd;
     /// Signal when render begins.
     Signal<void(const FrameInfo& frameInfo)> OnRenderBegin;
     /// Signal when render end.
@@ -119,14 +124,8 @@ protected:
     /// Recalculate hash (must not be non zero). Shall be save to call from multiple threads as long as the object is not changing.
     unsigned RecalculatePipelineStateHash() const override;
 
-    unsigned GetNumThreads() const { return numThreads_; }
-    void PostTask(std::function<void(unsigned)> task);
-    void CompleteTasks();
-
-    //void ClearViewport(ClearTargetFlags flags, const Color& color, float depth, unsigned stencil) override;
-    void CollectDrawables(ea::vector<Drawable*>& drawables, Camera* camera, DrawableFlags flags);
-    bool HasShadow(Light* light);
-    ShadowMap GetTemporaryShadowMap(const IntVector2& size);
+    bool HasShadow(Light* light) override;
+    ShadowMap GetTemporaryShadowMap(const IntVector2& size) override;
 
     SharedPtr<PipelineState> CreatePipelineState(
         const ScenePipelineStateKey& key, const ScenePipelineStateContext& ctx) override;
@@ -137,9 +136,6 @@ private:
     Graphics* graphics_{};
     Renderer* renderer_{};
     WorkQueue* workQueue_{};
-
-    unsigned numThreads_{};
-    unsigned numDrawables_{};
 
     /// Current pipeline settings.
     RenderPipelineSettings settings_;
@@ -161,9 +157,13 @@ private:
     SharedPtr<RenderPipelineTexture> deferredNormal_;
     SharedPtr<RenderPipelineTexture> deferredDepth_;
 
+    ea::vector<Drawable*> occluders_;
+    ea::vector<Drawable*> drawables_;
     SharedPtr<ShadowMapAllocator> shadowMapAllocator_;
+    SharedPtr<DrawableProcessor> drawableProcessor_;
     SharedPtr<SceneBatchCollector> sceneBatchCollector_;
     SharedPtr<SceneBatchRenderer> sceneBatchRenderer_;
+    SharedPtr<OcclusionBuffer> occlusionBuffer_;
 
 };
 

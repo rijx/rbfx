@@ -130,6 +130,9 @@ public:
     const Vector4& GetLightmapScaleOffset() const { return lightmapScaleOffset_; }
 
 protected:
+    /// Recalculate hash. Shall be save to call from multiple threads as long as the object is not changing.
+    unsigned RecalculatePipelineStateHash() const override;
+
     /// Recalculate the world-space bounding box.
     void OnWorldBoundingBoxUpdate() override;
     /// Set local-space bounding box.
