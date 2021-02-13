@@ -36,6 +36,36 @@ jobs:
     steps:
       - run: exit 0
 
+  Release:
+    name: Create release
+    runs-on: ubuntu-latest
+    needs: [Windows]
+    steps:
+      - name: Download x86 release files
+        uses: actions/download-artifact@v2
+        with:
+          name: "rbfx-${{ github.job }}-x86-rel-${{ github.sha }}"
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: bin/Editor.exe
+          asset_name: Editor.exe
+          asset_content_type: application/vnd.microsoft.portable-executable
+
   Windows:
     runs-on: windows-latest
     needs: [CheckSkipCI]
