@@ -45,6 +45,9 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: "rbfx-Windows-x86-rel-${{ github.sha }}"
+      - name: List .exe files
+        shell: bash
+        run: "find | grep .exe$"
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -62,7 +65,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.ci_sdk_dir }}/bin/Release/Editor.exe
+          asset_path: bin/Release/Editor.exe
           asset_name: Editor.exe
           asset_content_type: application/vnd.microsoft.portable-executable
 
