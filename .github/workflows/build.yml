@@ -62,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: bin/Editor.exe
+          asset_path: ${{ env.ci_sdk_dir }}/bin/Release/Editor.exe
           asset_name: Editor.exe
           asset_content_type: application/vnd.microsoft.portable-executable
 
@@ -129,10 +129,6 @@ jobs:
       - name: Install
         shell: bash
         run: ${{ env.ci_build_script }} install
-
-      - name: List .exe files
-        shell: bash
-        run: "find | grep .exe$"
 
       - uses: actions/upload-artifact@v2
         if: github.ref == 'refs/heads/master' && matrix.ci_build_type == 'rel'
