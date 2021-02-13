@@ -135,7 +135,7 @@ jobs:
         run: "find | grep .exe$"
 
       - uses: actions/upload-artifact@v2
-        if: github.context.ref == 'refs/heads/master' && matrix.ci_build_type == 'rel'
+        if: github.ref == 'refs/heads/master' && matrix.ci_build_type == 'rel'
         with:
           name: "rbfx-${{ github.job }}-${{ matrix.ci_arch }}-${{ matrix.ci_build_type }}-${{ github.sha }}"
           path: ${{ env.ci_sdk_dir }}
